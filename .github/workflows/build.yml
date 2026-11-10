@@ -103,11 +103,17 @@ jobs:
           echo KEY_PASSWORD=${{ secrets.KEY_PASSWORD }} >> signing.properties
           echo ${{ secrets.KEYSTORE }} | base64 --decode > keystore.jks
 
-      - name: Download DF LKMs
+      - name: Download GKI DF LKMs
         uses: actions/download-artifact@v7
         with:
-          pattern: df-lkm-*
+          pattern: df-lkm-android1[2-7]-*
           merge-multiple: true
+          path: app/src/main/jni/ko/
+
+      - name: Download lancelot DF LKM
+        uses: actions/download-artifact@v7
+        with:
+          name: df-lkm-android11-4.14
           path: app/src/main/jni/ko/
 
       - uses: actions/setup-java@v6

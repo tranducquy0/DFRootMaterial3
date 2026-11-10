@@ -1,6 +1,6 @@
 <resources>
     <style name="Theme.DirtyFrag" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:dynamicColorThemeOverlay">@style/ThemeOverlay.DirtyFrag.DynamicColors</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.DirtyFrag.DynamicColors</item>
         <item name="colorPrimary">@color/brand_green</item>
         <item name="colorSecondary">@color/brand_green</item>
         <item name="android:windowLightStatusBar">false</item>
