@@ -54,6 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       KERNEL_REF: b87145cdf9c33d2404c551b03f235d647bc7c1db
+      BUILD_JOBS: 2
     steps:
       - uses: actions/checkout@v7
 

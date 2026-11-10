@@ -23,6 +23,7 @@ KERNEL_CONFIG="${KERNEL_CONFIG:-lancelot_defconfig}"
 CLANG_URL="${CLANG_URL:-https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main-kernel-build-2023/clang-r487747c.tar.gz}"
 
 KO_OUT_NAME="${KO_OUT_NAME:-dfroot-android11-4.14.ko}"
+BUILD_JOBS="${BUILD_JOBS:-2}"
 
 OUT="${ROOT}/kernel"
 BLD="${OUT}/out"
@@ -82,7 +83,7 @@ done
 if grep -q "^CONFIG_MODVERSIONS=y" "${BLD}/.config"; then
     echo "WARN: CONFIG_MODVERSIONS=y — symbol CRCs must match the stock kernel"
     echo "=== building in-tree modules (generates Module.symvers) ==="
-    make ${MAKE_BASE} -j"$(nproc)" modules
+    make ${MAKE_BASE} -j"${BUILD_JOBS}" modules
 else
     echo "=== preparing kernel build tree ==="
     make ${MAKE_BASE} prepare
@@ -93,7 +94,7 @@ fi
 # mismatch here is tolerated, but print it for diagnostics.
 echo "=== dfroot.ko ==="
 make -C "$ROOT/lkm" KDIR="$OUT" \
-    EXTRA_MAKE_ARGS="${MAKE_BASE} -j$(nproc)" \
+    EXTRA_MAKE_ARGS="${MAKE_BASE} -j${BUILD_JOBS}" \
     OBJCOPY="aarch64-linux-gnu-objcopy"
 
 mkdir -p "$ROOT/out"
