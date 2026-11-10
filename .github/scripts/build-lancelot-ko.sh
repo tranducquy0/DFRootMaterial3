@@ -110,7 +110,7 @@ make -C "$ROOT/lkm" KDIR="$OUT" \
     OBJCOPY="aarch64-linux-gnu-objcopy"
 
 mkdir -p "$ROOT/out"
-cp lkm/dfroot.ko "$ROOT/out/${KO_OUT_NAME}"
+cp "$ROOT/lkm/dfroot.ko" "$ROOT/out/${KO_OUT_NAME}"
 
 echo "=== verify ==="
 aarch64-linux-gnu-objdump -f "$ROOT/out/${KO_OUT_NAME}" | grep -E 'file format|architecture'
