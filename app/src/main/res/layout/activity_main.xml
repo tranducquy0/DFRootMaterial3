@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
 
     <Spinner
         android:id="@+id/spinnerSuManager"
@@ -22,7 +28,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:weightSum="5">
+        android:weightSum="5"
+        android:paddingTop="8dp">
 
         <Button
             android:id="@+id/btnRun"
@@ -33,24 +40,34 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/outputScroll"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/outputCard"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:contentPadding="12dp">
 
-        <TextView
-            android:id="@+id/outputView"
+        <ScrollView
+            android:id="@+id/outputScroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:textIsSelectable="true"
-            android:textSize="11sp"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:layout_height="match_parent">
 
-    </ScrollView>
+            <TextView
+                android:id="@+id/outputView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textIsSelectable="true"
+                android:textSize="11sp"
+                android:textColor="?attr/colorOnSurface" />
+
+        </ScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

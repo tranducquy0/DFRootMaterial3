@@ -5,22 +5,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.preference.SwitchPreference;
 
-public class SettingsFragment extends PreferenceFragment {
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
+
+public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        Context ctx = getActivity();
+        Context ctx = requireContext();
         SharedPreferences dePrefs = ctx.createDeviceProtectedStorageContext()
                 .getSharedPreferences(ExploitRunner.PREFS_NAME, Context.MODE_PRIVATE);
 
         ComponentName bootReceiver = new ComponentName(ctx, BootReceiver.class);
-        SwitchPreference bootPref = (SwitchPreference) findPreference("boot_start");
+        SwitchPreferenceCompat bootPref = findPreference("boot_start");
         bootPref.setPersistent(false);
         int state = ctx.getPackageManager().getComponentEnabledSetting(bootReceiver);
         bootPref.setChecked(state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
@@ -32,7 +33,7 @@ public class SettingsFragment extends PreferenceFragment {
             return true;
         });
 
-        SwitchPreference softRebootPref = (SwitchPreference) findPreference("soft_reboot");
+        SwitchPreferenceCompat softRebootPref = findPreference("soft_reboot");
         softRebootPref.setPersistent(false);
         softRebootPref.setChecked(dePrefs.getBoolean("soft_reboot", false));
         softRebootPref.setOnPreferenceChangeListener((pref, value) -> {
@@ -40,12 +41,17 @@ public class SettingsFragment extends PreferenceFragment {
             return true;
         });
 
-        SwitchPreference disableModulesPref = (SwitchPreference) findPreference("disable_modules");
+        SwitchPreferenceCompat disableModulesPref = findPreference("disable_modules");
         disableModulesPref.setPersistent(false);
         disableModulesPref.setChecked(dePrefs.getBoolean("disable_modules", false));
         disableModulesPref.setOnPreferenceChangeListener((pref, value) -> {
             dePrefs.edit().putBoolean("disable_modules", (Boolean) value).apply();
             return true;
         });
+
+        Preference about = findPreference("about");
+        if (about != null) {
+            about.setSummary(R.string.about_summary);
+        }
     }
 }
