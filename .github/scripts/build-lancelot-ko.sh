@@ -53,6 +53,18 @@ if [ "$(git rev-parse HEAD)" != "$KERNEL_REF" ]; then
 fi
 echo "head: $(git rev-parse HEAD) ($(git log --oneline -1))"
 
+# This reconstructed vendor tree has a typo in mt_i2c_parse_dt(): the DT
+# controller id is stored in i2c->id, but the following check refers to an
+# undeclared bare `id`, which prevents the otherwise unrelated I2C driver
+# from compiling during `make modules`.
+I2C_SRC="${OUT}/drivers/i2c/busses/i2c-mtk.c"
+if grep -Fq 'if ((id == 1) || (id == 6) || (id == 8)) {' "${I2C_SRC}"; then
+    sed -i 's/if ((id == 1) || (id == 6) || (id == 8)) {/if ((i2c->id == 1) || (i2c->id == 6) || (i2c->id == 8)) {/' "${I2C_SRC}"
+elif ! grep -Fq 'if ((i2c->id == 1) || (i2c->id == 6) || (i2c->id == 8)) {' "${I2C_SRC}"; then
+    echo "FATAL: unexpected I2C source; cannot apply lancelot id fix"
+    exit 1
+fi
+
 kvers() { awk '/^(VERSION|PATCHLEVEL|SUBLEVEL) /{print $3}' Makefile | paste -sd. -; }
 KVERS="$(kvers)"
 echo "kernel: ${KVERS}"
