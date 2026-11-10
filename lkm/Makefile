@@ -3,10 +3,14 @@ obj-m += dfroot.o
 CFLAGS_dfroot.o := -Os -Qn -fno-addrsig -fno-asynchronous-unwind-tables \
                    -fno-unwind-tables
 
+EXTRA_MAKE_ARGS ?=
+OBJCOPY ?= llvm-objcopy
+
 all:
 	$(MAKE) -C $(KDIR) M=$(CURDIR) \
 		ARCH=arm64 \
 		LLVM=1 \
+		$(EXTRA_MAKE_ARGS) \
 		modules
 	$(OBJCOPY) --strip-unneeded \
 	           -R .comment -R .note.gnu.property \
@@ -20,6 +24,7 @@ clean:
 	$(MAKE) -C $(KDIR) M=$(CURDIR) \
 		ARCH=arm64 \
 		LLVM=1 \
+		$(EXTRA_MAKE_ARGS) \
 		clean
 	rm -f dfroot.lds
 

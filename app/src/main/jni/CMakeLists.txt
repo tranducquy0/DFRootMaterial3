@@ -27,10 +27,11 @@ set(KO_FILES
     "${JNI_DIR}/ko/dfroot-android13-5.10.ko"
     "${JNI_DIR}/ko/dfroot-android13-5.15.ko"
     "${JNI_DIR}/ko/dfroot-android14-5.15.ko"
-    "${JNI_DIR}/ko/dfroot-android14-6.1.ko"
     "${JNI_DIR}/ko/dfroot-android15-6.6.ko"
+    "${JNI_DIR}/ko/dfroot-android14-6.1.ko"
     "${JNI_DIR}/ko/dfroot-android16-6.12.ko"
     "${JNI_DIR}/ko/dfroot-android17-6.18.ko"
+    "${JNI_DIR}/ko/dfroot-android11-4.14.ko"
 )
 
 # AGP only packages lib*.so, so the executable is named libdfroot.so and lands

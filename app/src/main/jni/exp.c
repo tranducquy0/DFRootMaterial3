@@ -260,6 +260,8 @@ asm(
     "dfroot_ko_16_6_12_start:\n.incbin \"ko/dfroot-android16-6.12.ko\"\ndfroot_ko_16_6_12_end:\n"
     ".global dfroot_ko_17_6_18_start\n.global dfroot_ko_17_6_18_end\n"
     "dfroot_ko_17_6_18_start:\n.incbin \"ko/dfroot-android17-6.18.ko\"\ndfroot_ko_17_6_18_end:\n"
+    ".global dfroot_ko_11_4_14_start\n.global dfroot_ko_11_4_14_end\n"
+    "dfroot_ko_11_4_14_start:\n.incbin \"ko/dfroot-android11-4.14.ko\"\ndfroot_ko_11_4_14_end:\n"
 );
 
 asm(
@@ -276,6 +278,7 @@ extern char dfroot_ko_14_6_1_start[],  dfroot_ko_14_6_1_end[];
 extern char dfroot_ko_15_6_6_start[],  dfroot_ko_15_6_6_end[];
 extern char dfroot_ko_16_6_12_start[], dfroot_ko_16_6_12_end[];
 extern char dfroot_ko_17_6_18_start[], dfroot_ko_17_6_18_end[];
+extern char dfroot_ko_11_4_14_start[], dfroot_ko_11_4_14_end[];
 extern char splice_helper_start[], splice_helper_end[];
 
 struct KoImage { int android_release, kver_major, kver_minor; const char *start, *end; };
@@ -290,6 +293,7 @@ static const struct KoImage *select_ko_image(int andr, int major, int minor) {
         {15, 6,  6, dfroot_ko_15_6_6_start,  dfroot_ko_15_6_6_end},
         {16, 6, 12, dfroot_ko_16_6_12_start, dfroot_ko_16_6_12_end},
         {17, 6, 18, dfroot_ko_17_6_18_start, dfroot_ko_17_6_18_end},
+        {11, 4, 14, dfroot_ko_11_4_14_start, dfroot_ko_11_4_14_end},
     };
     const struct KoImage *fb = NULL;
     for (size_t i = 0; i < sizeof(imgs)/sizeof(imgs[0]); i++) {
@@ -300,9 +304,12 @@ static const struct KoImage *select_ko_image(int andr, int major, int minor) {
     return fb;
 }
 
+static char g_kernel_release[128];
+
 static int read_device_versions(int *andr, int *major, int *minor) {
     struct utsname u;
     if (uname(&u) != 0) return -1;
+    snprintf(g_kernel_release, sizeof(g_kernel_release), "%s", u.release);
     if (sscanf(u.release, "%d.%d", major, minor) != 2) return -1;
     const char *m = strstr(u.release, "android");
     if (!m) {
@@ -331,6 +338,46 @@ static char *pad16(const char *data, size_t len, size_t *out_len) {
     if (buf) memcpy(buf, data, len);
     *out_len = padded;
     return buf;
+}
+
+/* Rewrite the .ko's vermagic so device insmod accepts a build whose kernel
+ * source revision differs from the running release. Only the release token
+ * (before the first space) is replaced; ABI flag suffixes like
+ * "SMP mod_unload aarch64" are preserved and must still match the target
+ * kernel build config. */
+static int rewrite_ko_vermagic(char *buf, size_t len) {
+    if (!g_kernel_release[0]) {
+        struct utsname u;
+        if (uname(&u) != 0) return -1;
+        snprintf(g_kernel_release, sizeof(g_kernel_release), "%s", u.release);
+    }
+    const char *release = g_kernel_release;
+    static const char needle[] = "vermagic=";
+    size_t nlen = sizeof(needle) - 1;
+    size_t rel_len = strlen(release);
+
+    for (char *p = buf; p + nlen + rel_len < buf + len; p++) {
+        if (memcmp(p, needle, nlen) != 0) continue;
+        char *v = p + nlen;
+        char *end = memchr(v, '\0', (size_t)(buf + len - v));
+        if (!end) return -1;
+        char *sp = memchr(v, ' ', (size_t)(end - v));
+        size_t rel_max = sp ? (size_t)(sp - v) : (size_t)(end - v);
+        if (rel_len > rel_max) {
+            printf("vermagic: device release %s longer than ko %.*s\n",
+                   release, (int)rel_max, v);
+            return -1;
+        }
+        memcpy(v, release, rel_len);
+        if (sp && rel_len < rel_max) {
+            size_t rest_len = (size_t)(end - sp);
+            memmove(v + rel_len, sp, rest_len + 1);
+        }
+        printf("vermagic: set to %s\n", release);
+        return 0;
+    }
+    printf("vermagic: marker not found in ko\n");
+    return -1;
 }
 
 /* Write splicehelper into crash_dump64 page cache. */
@@ -374,6 +421,8 @@ static int patch_ko(void) {
     size_t len;
     char *buf = pad16(ko->start, (size_t)(ko->end - ko->start), &len);
     if (!buf) { printf("patch: %s - pad16 alloc failed\n", libcxx_ko_target); return -1; }
+    if (g_kernel_release[0])
+        rewrite_ko_vermagic(buf, len);
     printf("patch: %s <- dfroot.ko (%zu bytes)\n", libcxx_ko_target, len);
     int ret = patch_file_cbc(libcxx_ko_target, buf, len, 0, 1);
     free(buf);

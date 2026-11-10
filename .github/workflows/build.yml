@@ -49,8 +49,38 @@ jobs:
           name: df-lkm-${{ matrix.kmi }}
           path: out/dfroot-${{ matrix.kmi }}.ko
 
+  build-lkms-lancelot:
+    name: LKMs / lancelot-4.14.non-GKI
+    runs-on: ubuntu-latest
+    env:
+      KERNEL_REF: b87145cdf9c33d2404c551b03f235d647bc7c1db
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Cache kernel tree + toolchain
+        uses: actions/cache@v4
+        with:
+          path: |
+            kernel
+            toolchain
+          key: lancelot-${{ env.KERNEL_REF }}
+
+      - name: Install build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc binutils-aarch64-linux-gnu gcc-aarch64-linux-gnu libelf-dev libssl-dev
+
+      - name: Build dfroot.ko (lancelot 4.14 non-GKI)
+        run: .github/scripts/build-lancelot-ko.sh
+
+      - name: Upload dfroot.ko
+        uses: actions/upload-artifact@v7
+        with:
+          name: df-lkm-android11-4.14
+          path: out/dfroot-android11-4.14.ko
+
   build-dfroot:
-    needs: build-lkms
+    needs: [build-lkms, build-lkms-lancelot]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

@@ -84,8 +84,25 @@ The exploit uses this primitive to patch shellcode into `libc++.so` in the kerne
 ## Building
 
 ```sh
-make
+make              # GKI KMI kernel modules + APK (requires podman)
 ```
+
+For non-GKI devices the kernel module is built by CI (`.github/workflows/build.yml`,
+job `build-lkms-lancelot`) and merged into the APK automatically. To build it
+locally: `make lancelot-ko` (pinned source + AOSP clang; see
+`.github/scripts/build-lancelot-ko.sh` header for source candidates).
+
+## Device support
+
+- Kernel modules are built per (Android version, KMI) for GKI devices, and one
+  non-GKI `android11-4.14` build covers MTK 4.14 devices (Xiaomi Redmi 9 /
+  lancelot; vermagic is rewritten at runtime to the device kernel release).
+- The device kernel must be built with `CONFIG_MODULES`, `CONFIG_KPROBES`
+  and `CONFIG_KALLSYMS[_ALL]` — check `/proc/config.gz`. `CONFIG_MODVERSIONS=y`
+  also implies symbol CRC matching against the stock build.
+- Redmi 9: stock MIUI 12/12.5 kernels are 4.14; MIUI 13 may ship 4.19 — the
+  app log prints `kernel version` before running, and unsupported kernels
+  fail cleanly with `Unsupported kernel`.
 
 ## Credits
 

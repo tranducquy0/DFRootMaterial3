@@ -37,9 +37,12 @@ APK_SRCS    := $(wildcard app/src/main/java/df/root/*.java \
 APK   := out/DFRoot.apk
 
 
-.PHONY: all clean
+.PHONY: all clean lancelot-ko
 
 all: $(APK)
+
+lancelot-ko:
+	.github/scripts/build-lancelot-ko.sh
 
 keystore.jks:
 	keytool -genkeypair -keystore $@ -storetype JKS \
