@@ -1,0 +1,670 @@
+{
+  "fixtures": [
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_ordinary.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "SAFE_TAIL",
+        "reason": "file-backed zero tail large enough",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 7680,
+            "length": 512,
+            "fits": true
+          }
+        ],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3584,
+            "memsz": 3584,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 7680,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "AGREE_ACCEPT",
+      "explanation": "both accept a file-backed zero tail"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_tight_g22.elf",
+      "size": 12720,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "NO_SPACE",
+        "reason": "no file-backed tail and no ambiguous run large enough",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 8080,
+            "length": 112,
+            "fits": false
+          }
+        ],
+        "largest_zero_run": 14,
+        "largest_zero_run_offset": 4144,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3984,
+            "memsz": 3984,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "REJECT",
+        "offset": null,
+        "reason": "no code cave large enough (need 464, largest found 14)",
+        "messages": [
+          "shellcode (464) exceeds tail-page slack (112 bytes)",
+          "no code cave large enough (need 464, largest found 14)"
+        ],
+        "defects": [],
+        "exec_offset": 4096,
+        "exec_filesz": 3984,
+        "slack": 112,
+        "largest_zero_run": 14
+      },
+      "verdict": "AGREE_REJECT",
+      "explanation": "both reject; reference: no file-backed tail and no ambiguous run large enough"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_no_sections.elf",
+      "size": 8420,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "SAFE_TAIL",
+        "reason": "file-backed zero tail large enough",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 7680,
+            "length": 512,
+            "fits": true
+          }
+        ],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3584,
+            "memsz": 3584,
+            "flags": 5
+          }
+        ],
+        "extended": {}
+      },
+      "current": {
+        "status": "REJECT",
+        "offset": null,
+        "reason": ".dynstr or .dynsym not found",
+        "messages": [
+          ".dynstr or .dynsym not found"
+        ],
+        "defects": [],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": null,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_NEGATIVE",
+      "explanation": "reference found a file-backed zero tail the current scanner missed"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_extended_numbering.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "SAFE_TAIL",
+        "reason": "file-backed zero tail large enough",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 7680,
+            "length": 512,
+            "fits": true
+          }
+        ],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3584,
+            "memsz": 3584,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": true,
+          "shnum": true,
+          "shstrndx": true
+        }
+      },
+      "current": {
+        "status": "REJECT",
+        "offset": null,
+        "reason": ".dynstr or .dynsym not found",
+        "messages": [
+          ".dynstr or .dynsym not found"
+        ],
+        "defects": [
+          "short read of shstrndx section header not detected"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": null,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_NEGATIVE",
+      "explanation": "reference found a file-backed zero tail the current scanner missed"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_multi_exec.elf",
+      "size": 16808,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "SAFE_TAIL",
+        "reason": "file-backed zero tail large enough",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 8080,
+            "length": 112,
+            "fits": false
+          },
+          {
+            "segment": 1,
+            "offset": 15872,
+            "length": 512,
+            "fits": true
+          }
+        ],
+        "largest_zero_run": 3991,
+        "largest_zero_run_offset": 8297,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3984,
+            "memsz": 3984,
+            "flags": 5
+          },
+          {
+            "offset": 12288,
+            "vaddr": 131072,
+            "filesz": 3584,
+            "memsz": 3584,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "REJECT",
+        "offset": null,
+        "reason": "no code cave large enough (need 464, largest found 0)",
+        "messages": [
+          "shellcode (464) exceeds tail-page slack (112 bytes)",
+          "no code cave large enough (need 464, largest found 0)"
+        ],
+        "defects": [
+          "stops at the first of 2 executable PT_LOAD segments"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 3984,
+        "slack": 112,
+        "largest_zero_run": 0
+      },
+      "verdict": "FALSE_NEGATIVE",
+      "explanation": "reference found a file-backed zero tail the current scanner missed"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_tail_nonzero.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "NO_SPACE",
+        "reason": "no file-backed tail and no ambiguous run large enough",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3584,
+            "memsz": 3584,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 7680,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference found no space (NO_SPACE)"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_zero_run_in_data.elf",
+      "size": 12720,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "AMBIGUOUS_ONLY",
+        "reason": "only an in-segment zero run large enough; may be data",
+        "symbol_value": 65568,
+        "symbol_offset": 4128,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 8080,
+            "length": 112,
+            "fits": false
+          }
+        ],
+        "largest_zero_run": 600,
+        "largest_zero_run_offset": 4160,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3984,
+            "memsz": 3984,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 4160,
+        "reason": "",
+        "messages": [
+          "shellcode (464) exceeds tail-page slack (112 bytes)",
+          "using code cave at 0x1040"
+        ],
+        "defects": [],
+        "exec_offset": 4096,
+        "exec_filesz": 3984,
+        "slack": 112,
+        "largest_zero_run": 464
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current used an in-segment zero run that may be real data"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_symbol_in_bss.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "SYMBOL_NOT_FILE_BACKED",
+        "reason": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_ st_value=0x10e10 is not in a file-backed executable range",
+        "symbol_value": 69136,
+        "symbol_offset": null,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 7680,
+            "length": 512,
+            "fits": true
+          }
+        ],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [
+          {
+            "offset": 4096,
+            "vaddr": 65536,
+            "filesz": 3584,
+            "memsz": 11776,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 7680,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [
+          "does not check that the symbol is file-backed"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference rejected: _ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_ st_value=0x10e10 is not in a file-backed executable range"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/aarch64_segment_past_eof.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "PARSE_ERROR",
+        "reason": "phdr[0] file range 0x1000+0x3e00 extends past EOF (0x3168)",
+        "symbol_value": null,
+        "symbol_offset": null,
+        "safe_tails": [],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [],
+        "extended": {}
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 19968,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [
+          "accepts a tail offset past EOF"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 15872,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference rejected: phdr[0] file range 0x1000+0x3e00 extends past EOF (0x3168)"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/x86_64_ordinary.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "PARSE_ERROR",
+        "reason": "e_machine=62 (not AArch64)",
+        "symbol_value": null,
+        "symbol_offset": null,
+        "safe_tails": [],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [],
+        "extended": {}
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 7680,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [
+          "does not validate e_machine (saw 62)"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference rejected: e_machine=62 (not AArch64)"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/elf32_claim.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "PARSE_ERROR",
+        "reason": "EI_CLASS=1 (not ELF64)",
+        "symbol_value": null,
+        "symbol_offset": null,
+        "safe_tails": [],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [],
+        "extended": {}
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 7680,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [
+          "does not validate EI_CLASS"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference rejected: EI_CLASS=1 (not ELF64)"
+    },
+    {
+      "path": "/data/data/com.termux/files/home/DFRootMaterial3/tools/elf_layout_probe/fixtures/big_endian_claim.elf",
+      "size": 12648,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "PARSE_ERROR",
+        "reason": "EI_DATA=2 (not little-endian)",
+        "symbol_value": null,
+        "symbol_offset": null,
+        "safe_tails": [],
+        "largest_zero_run": 0,
+        "largest_zero_run_offset": null,
+        "exec_segments": [],
+        "extended": {}
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 7680,
+        "reason": "",
+        "messages": [
+          "tail slack 512 >= 464"
+        ],
+        "defects": [
+          "does not validate EI_DATA"
+        ],
+        "exec_offset": 4096,
+        "exec_filesz": 3584,
+        "slack": 512,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference rejected: EI_DATA=2 (not little-endian)"
+    }
+  ],
+  "host_libraries": [
+    {
+      "path": "/system/lib64/libc++.so",
+      "size": 1083168,
+      "symbol": "_ZNSt3__113basic_ostreamIcNS_11char_traitsIcEEE6sentryC1ERS3_",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "NO_SPACE",
+        "reason": "no file-backed tail and no ambiguous run large enough",
+        "symbol_value": 749736,
+        "symbol_offset": 733352,
+        "safe_tails": [],
+        "largest_zero_run": 12,
+        "largest_zero_run_offset": 1030308,
+        "exec_segments": [
+          {
+            "offset": 544096,
+            "vaddr": 560480,
+            "filesz": 497864,
+            "memsz": 497864,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 1041960,
+        "reason": "",
+        "messages": [
+          "tail slack 2520 >= 464"
+        ],
+        "defects": [],
+        "exec_offset": 544096,
+        "exec_filesz": 497864,
+        "slack": 2520,
+        "largest_zero_run": null
+      },
+      "verdict": "FALSE_POSITIVE",
+      "explanation": "current accepted but reference found no space (NO_SPACE)"
+    },
+    {
+      "path": "/system/lib64/libbase.so",
+      "size": 235304,
+      "symbol": "_ZN7android4base10LogMessageD1Ev",
+      "payload": 464,
+      "pagesize": 4096,
+      "reference": {
+        "status": "SAFE_TAIL",
+        "reason": "file-backed zero tail large enough",
+        "symbol_value": 89296,
+        "symbol_offset": 89296,
+        "safe_tails": [
+          {
+            "segment": 0,
+            "offset": 199744,
+            "length": 960,
+            "fits": true
+          }
+        ],
+        "largest_zero_run": 12,
+        "largest_zero_run_offset": 65556,
+        "exec_segments": [
+          {
+            "offset": 65536,
+            "vaddr": 65536,
+            "filesz": 134208,
+            "memsz": 134208,
+            "flags": 5
+          }
+        ],
+        "extended": {
+          "phnum": false,
+          "shnum": false,
+          "shstrndx": false
+        }
+      },
+      "current": {
+        "status": "ACCEPT",
+        "offset": 199744,
+        "reason": "",
+        "messages": [
+          "tail slack 960 >= 464"
+        ],
+        "defects": [],
+        "exec_offset": 65536,
+        "exec_filesz": 134208,
+        "slack": 960,
+        "largest_zero_run": null
+      },
+      "verdict": "AGREE_ACCEPT",
+      "explanation": "both accept a file-backed zero tail"
+    }
+  ]
+}

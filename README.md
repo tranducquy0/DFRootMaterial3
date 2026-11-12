@@ -103,9 +103,13 @@ locally: `make lancelot-ko` (pinned source + AOSP clang; see
 - Redmi 9: stock MIUI 12/12.5 kernels are 4.14; MIUI 13 may ship 4.19 — the
   app log prints `kernel version` before running, and unsupported kernels
   fail cleanly with `Unsupported kernel`.
+- ELF compatibility is also required for the target `libc++.so`. A failure
+  while locating shellcode space means the current binary layout is unsupported;
+  see [ELF compatibility diagnosis](docs/elf-compatibility.md).
 
 ## Credits
 
 - Original PoC and various code: https://github.com/lsposed/lspromise
 - SELinux Permissive kernel modules and various code: https://github.com/polygraphene/DFReroot
 - Unprivileged XFRM socket method: https://github.com/combeng6th/DirtyInit
+- `libbase` hook fallback when `libc++.so` has no shellcode space (PR #185): https://github.com/diabl0w/DFRoot/pull/185 — thanks to [@redzrush101](https://github.com/redzrush101)
